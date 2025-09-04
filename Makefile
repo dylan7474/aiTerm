@@ -5,6 +5,8 @@ SRCS = main.c
 CFLAGS = -Wall -O2
 LDFLAGS = -lcurl -ljansson
 
+-include config.mk
+
 all: $(TARGET)
 
 $(TARGET): $(SRCS)
