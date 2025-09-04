@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -e
+
+if ! command -v pkg-config >/dev/null 2>&1; then
+  echo "Error: pkg-config not found. Please install pkg-config." >&2
+  exit 1
+fi
+
+for lib in libcurl jansson; do
+  if ! pkg-config --exists "$lib"; then
+    echo "Error: Required library $lib not found. Please install it." >&2
+    exit 1
+  fi
+done
+
+CFLAGS=$(pkg-config --cflags libcurl jansson)
+LIBS=$(pkg-config --libs libcurl jansson)
+
+cat > config.mk <<EOF_CONF
+CFLAGS += ${CFLAGS}
+LDFLAGS += ${LIBS}
+EOF_CONF
+
+echo "Configuration complete. Run 'make' to build the project." 

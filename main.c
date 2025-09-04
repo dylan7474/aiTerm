@@ -84,6 +84,12 @@ int main(void) {
         curl = curl_easy_init();
         if(curl) {
             struct MemoryStruct chunk = { .memory = malloc(1), .size = 0 };
+            if (!chunk.memory) {
+                fprintf(stderr, "Failed to allocate memory for response.\n");
+                curl_easy_cleanup(curl);
+                continue;
+            }
+
             struct curl_slist *headers = NULL;
             headers = curl_slist_append(headers, "Content-Type: application/json");
 
